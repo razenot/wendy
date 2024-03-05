@@ -52,7 +52,9 @@
             "dev-master": "11.x-dev"
         },
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/dusk"
+            ]
         }
     },
     "config": {
