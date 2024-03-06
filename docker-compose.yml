@@ -19,6 +19,7 @@ services:
         depends_on:
             - db
         container_name: app
+        user: razenot
     db:
         image: 'mysql:8.0'
         restart: always
