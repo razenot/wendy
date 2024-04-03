@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guests;
+use App\Models\Todo;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreGuestsRequest;
-use App\Http\Requests\UpdateGuestsRequest;
+use App\Http\Requests\StoreTodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
 
-class GuestsController extends Controller
+class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +28,7 @@ class GuestsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGuestsRequest $request)
+    public function store(StoreTodoRequest $request)
     {
         //
     }
@@ -36,7 +36,7 @@ class GuestsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Guests $guests)
+    public function show(Todo $todo)
     {
         //
     }
@@ -44,7 +44,7 @@ class GuestsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Guests $guests)
+    public function edit(Todo $todo)
     {
         //
     }
@@ -52,7 +52,7 @@ class GuestsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGuestsRequest $request, Guests $guests)
+    public function update(UpdateTodoRequest $request, Todo $todo)
     {
         //
     }
@@ -60,7 +60,7 @@ class GuestsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Guests $guests)
+    public function destroy(Todo $todo)
     {
         //
     }

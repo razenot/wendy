@@ -17,7 +17,10 @@ class GuestsFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake('ru_RU')->firstName(),
+            'surname' => fake('ru_RU')->lastName(),
+            'child' => fake()->boolean(),
+            'invite' => fake()->boolean(),
         ];
     }
 }
