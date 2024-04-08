@@ -23,12 +23,20 @@ class GuestsController extends Controller
 
     public function show(int $id)
     {
-        $guest = GuestsResource::make(Guests::find($id));
-
-        return response()->json(
-            data: $guest,
-            status: 200,
-        );
+        $guest = Guests::find($id);
+        
+        if($guest) {
+            $guestResource = GuestsResource::make($guest);
+            return response()->json(
+                data: $guestResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
     public function store(StoreGuestsRequest $request)

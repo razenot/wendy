@@ -4,25 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOutlayRequest extends FormRequest
+class UpdateOutlayRequest extends StoreOutlayRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string|max:255',
+            'price' => 'numeric|max_digits:8',
+            'prepayment' => 'nullable|numeric|max_digits:8',
+            'comments' => 'nullable',
+            'prepayment_date' => 'nullable|date',
+            'all_payment_date' => 'nullable|date'
         ];
     }
 }

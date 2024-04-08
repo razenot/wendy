@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAgentsRequest extends FormRequest
+class UpdateAgentsRequest extends StoreAgentsRequest
 {
     public function rules(): array
     {

@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\GuestsController;
 use App\Http\Controllers\Api\V1\AgentsController;
+use App\Http\Controllers\Api\V1\TodoController;
+use App\Http\Controllers\Api\V1\OutlayController;
+
 
 Route::prefix('v1')->group(function () {
     Route::get('/guests', [GuestsController::class, 'index']);
@@ -15,6 +18,16 @@ Route::prefix('v1')->group(function () {
     Route::get('/agents/{id}', [AgentsController::class, 'show']);
     Route::post('/agents', [AgentsController::class, 'store']);
     Route::post('/agents-update', [AgentsController::class, 'update']);
+
+    Route::get('/todo', [TodoController::class, 'index']);
+    Route::get('/todo/{id}', [TodoController::class, 'show']);
+    Route::post('/todo', [TodoController::class, 'store']);
+    Route::post('/todo-update', [TodoController::class, 'update']);
+
+    Route::get('/outlay', [OutlayController::class, 'index']);
+    Route::get('/outlay/{id}', [OutlayController::class, 'show']);
+    Route::post('/outlay', [OutlayController::class, 'store']);
+    Route::post('/outlay-update', [OutlayController::class, 'update']);
 });
 
 

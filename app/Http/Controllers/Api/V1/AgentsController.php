@@ -24,12 +24,20 @@ class AgentsController extends Controller
 
     public function show(int $id)
     {
-        $agent = AgentsResource::make(Agents::find($id));
+        $agent = Agents::find($id);
 
-        return response()->json(
-            data: $agent,
-            status: 200,
-        );
+        if($agent) {
+            $agentsResource = AgentsResource::make($agent);
+            return response()->json(
+                data: $agentsResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
     public function store(StoreAgentsRequest $request)
