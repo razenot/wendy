@@ -24,12 +24,20 @@ class AgentsController extends Controller
 
     public function show(int $id)
     {
-        $agent = AgentsResource::make(Agents::find($id));
+        $agent = Agents::find($id);
 
-        return response()->json(
-            data: $agent,
-            status: 200,
-        );
+        if($agent) {
+            $agentsResource = AgentsResource::make($agent);
+            return response()->json(
+                data: $agentsResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
     public function store(StoreAgentsRequest $request)
@@ -40,7 +48,7 @@ class AgentsController extends Controller
 
             return response()->json(
                 data: $agentsResource,
-                status: 200,
+                status: 201,
             );
         } catch (Exeption $e) {
             return response()->json(
@@ -63,6 +71,21 @@ class AgentsController extends Controller
                 data: $agentsResource,
                 status: 200,
             );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $agent = Agents::find($id);
+
+        if($agent) {
+            $agent->delete();
+            return response()->noContent();
         } else {
             return response()->json(
                 data: ["errors" => "Запись не найдена"],

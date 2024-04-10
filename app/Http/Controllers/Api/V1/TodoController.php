@@ -1,67 +1,96 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Todo;
+use App\Http\Resources\TodoResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use Illuminate\Http\Response;
+
 
 class TodoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $todos = TodoResource::collection(Todo::all());
+
+        return response()->json(
+            data: $todos,
+            status: 200,
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(int $id)
     {
-        //
+        $todo = Todo::find($id);
+        
+        if($todo) {
+            $todosResource = TodoResource::make($todo);
+            return response()->json(
+                data: $todosResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreTodoRequest $request)
     {
-        //
+        try {
+            $todos = Todo::create($request->validated());
+            $todosResource = TodoResource::make($todos);
+
+            return response()->json(
+                data: $todosResource,
+                status: 201,
+            );
+        } catch (Exeption $e) {
+            return response()->json(
+                data: ["errors" => "Произошла ошибка"],
+                status: 422,
+            );
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Todo $todo)
+    public function update(UpdateTodoRequest $request)
     {
-        //
+        $todo = Todo::find($request->id);
+
+        if($todo) {
+            $todo->update($request->validated());
+            $todosResource = TodoResource::make($todo);
+
+            return response()->json(
+                data: $todosResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Todo $todo)
+    public function destroy(int $id)
     {
-        //
-    }
+        $todo = Todo::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTodoRequest $request, Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Todo $todo)
-    {
-        //
+        if($todo) {
+            $todo->delete();
+            return response()->noContent();
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 }

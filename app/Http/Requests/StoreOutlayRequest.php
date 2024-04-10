@@ -11,7 +11,7 @@ class StoreOutlayRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreOutlayRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|max_digits:8',
+            'prepayment' => 'nullable|numeric|max_digits:8',
+            'comments' => 'nullable',
+            'prepayment_date' => 'nullable|date',
+            'all_payment_date' => 'nullable|date'
         ];
     }
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->timestamp('scheduled_date');
             $table->boolean('status')->default(false);
-            $table->text('comments');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

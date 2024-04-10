@@ -21,10 +21,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('price');
-            $table->integer('prepayment');
-            $table->timestamp('prepayment_date');
-            $table->timestamp('all_payment_date');
-            $table->text('comments');
+            $table->integer('prepayment')->default(0);
+            $table->timestamp('prepayment_date')->nullable();
+            $table->timestamp('all_payment_date')->nullable();
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

@@ -1,67 +1,95 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Outlay;
+use App\Http\Resources\OutlayResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOutlayRequest;
 use App\Http\Requests\UpdateOutlayRequest;
+use Illuminate\Http\Response;
 
 class OutlayController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $outlays = OutlayResource::collection(Outlay::all());
+
+        return response()->json(
+            data: $outlays,
+            status: 200,
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(int $id)
     {
-        //
+        $outlay = Outlay::find($id);
+
+        if($outlay) {
+            $outlaysResource = OutlayResource::make($outlay);
+            return response()->json(
+                data: $outlaysResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreOutlayRequest $request)
     {
-        //
+        try {
+            $outlays = Outlay::create($request->validated());
+            $outlaysResource = OutlayResource::make($outlays);
+
+            return response()->json(
+                data: $outlaysResource,
+                status: 201,
+            );
+        } catch (Exeption $e) {
+            return response()->json(
+                data: ["errors" => "Произошла ошибка"],
+                status: 422,
+            );
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Outlay $outlay)
+    public function update(UpdateOutlayRequest $request)
     {
-        //
+        $outlay = Outlay::find($request->id);
+
+        if($outlay) {
+            $outlay->update($request->validated());
+            $outlaysResource = OutlayResource::make($outlay);
+
+            return response()->json(
+                data: $outlaysResource,
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Outlay $outlay)
+    public function destroy(int $id)
     {
-        //
-    }
+        $outlay = Outlay::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateOutlayRequest $request, Outlay $outlay)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Outlay $outlay)
-    {
-        //
+        if($outlay) {
+            $outlay->delete();
+            return response()->noContent();
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
     }
 }
