@@ -37,4 +37,22 @@ Route::prefix('v1')->group(function () {
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+})->middleware('auth:api');
+
+Route::post('/login', function (Request $request) {
+    $credentails = $request->only(['email', 'password']);
+
+    if(!$token = auth()->attempt($credentails)) {
+        return response()->json(
+            status: 401,
+        );
+    }
+
+    return response()->json([
+        'data' => [
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]
+    ]);
+});
