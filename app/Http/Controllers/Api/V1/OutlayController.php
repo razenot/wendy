@@ -47,7 +47,7 @@ class OutlayController extends Controller
 
             return response()->json(
                 data: $outlaysResource,
-                status: 200,
+                status: 201,
             );
         } catch (Exeption $e) {
             return response()->json(
@@ -70,6 +70,21 @@ class OutlayController extends Controller
                 data: $outlaysResource,
                 status: 200,
             );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $outlay = Outlay::find($id);
+
+        if($outlay) {
+            $outlay->delete();
+            return response()->noContent();
         } else {
             return response()->json(
                 data: ["errors" => "Запись не найдена"],

@@ -47,7 +47,7 @@ class GuestsController extends Controller
 
             return response()->json(
                 data: $guestsResource,
-                status: 200,
+                status: 201,
             );
         } catch (Exeption $e) {
             return response()->json(
@@ -70,6 +70,21 @@ class GuestsController extends Controller
                 data: $guestsResource,
                 status: 200,
             );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $guest = Guests::find($id);
+
+        if($guest) {
+            $guest->delete();
+            return response()->noContent();
         } else {
             return response()->json(
                 data: ["errors" => "Запись не найдена"],

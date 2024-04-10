@@ -48,7 +48,7 @@ class TodoController extends Controller
 
             return response()->json(
                 data: $todosResource,
-                status: 200,
+                status: 201,
             );
         } catch (Exeption $e) {
             return response()->json(
@@ -71,6 +71,21 @@ class TodoController extends Controller
                 data: $todosResource,
                 status: 200,
             );
+        } else {
+            return response()->json(
+                data: ["errors" => "Запись не найдена"],
+                status: 422,
+            );
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $todo = Todo::find($id);
+
+        if($todo) {
+            $todo->delete();
+            return response()->noContent();
         } else {
             return response()->json(
                 data: ["errors" => "Запись не найдена"],
