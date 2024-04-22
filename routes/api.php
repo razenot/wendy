@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\GuestsController;
 use App\Http\Controllers\Api\V1\AgentsController;
 use App\Http\Controllers\Api\V1\TodoController;
 use App\Http\Controllers\Api\V1\OutlayController;
+use App\Http\Controllers\AuthController;
 
 
 Route::prefix('v1')->group(function () {
@@ -34,25 +35,37 @@ Route::prefix('v1')->group(function () {
     Route::delete('/outlay/{id}', [OutlayController::class, 'destroy']);
 });
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/me', [AuthController::class, 'me']);
+
 })->middleware('auth:api');
 
-Route::post('/login', function (Request $request) {
-    $credentails = $request->only(['email', 'password']);
 
-    if(!$token = auth()->attempt($credentails)) {
-        return response()->json(
-            status: 401,
-        );
-    }
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:api');
 
-    return response()->json([
-        'data' => [
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]
-    ]);
-});
+// Route::post('/login', function (Request $request) {
+//     $credentails = $request->only(['email', 'password']);
+
+//     if(!$token = auth()->attempt($credentails)) {
+//         return response()->json(
+//             status: 401,
+//         );
+//     }
+
+//     return response()->json([
+//         'data' => [
+//             'token' => $token,
+//             'token_type' => 'bearer',
+//             'expires_in' => auth()->factory()->getTTL() * 60
+//         ]
+//     ]);
+// });
